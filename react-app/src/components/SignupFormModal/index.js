@@ -9,14 +9,24 @@ function SignupFormModal() {
 	const [email, setEmail] = useState("");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [img_url, setImgUrl] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [errors, setErrors] = useState([]);
 	const { closeModal } = useModal();
 
+	function checkURL(imageUrl) {
+		return(imageUrl.match(/\.(jpeg|jpg|gif|png)$/) != null);
+	}
+
+	function validateEmail(email) {
+		var re = /\S+@\S+\.\S+/;
+		return re.test(email);
+	}
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
+			const data = await dispatch(signUp(username, email, img_url, password));
 			if (data) {
 				setErrors(data);
 			} else {
@@ -56,6 +66,17 @@ function SignupFormModal() {
 						required
 					/>
 				</label>
+				<div>
+				<label>
+					Profile Picture Url :
+					<input
+						type="text"
+						value={img_url}
+						onChange={(e) => setImgUrl(e.target.value)}
+						required
+					/>
+				</label>
+				</div>
 				<label>
 					Password
 					<input
