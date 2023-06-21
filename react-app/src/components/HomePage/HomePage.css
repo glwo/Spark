@@ -1,0 +1,125 @@
+.homePageContainer {
+    background-color: #222;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .homePageContent {
+    text-align: center;
+    color: #fff;
+    margin-top: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Updated */
+  }
+
+  .welcomeMessage {
+    font-size: 3rem;
+    margin-bottom: 0.5vh;
+  }
+
+  .authButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .sparkContainer {
+    margin-bottom: 2rem;
+  }
+
+  .footer {
+    margin-top: auto;
+    text-align: center;
+    color: white;
+    padding-bottom: 2rem;
+  }
+
+  .footer h3 {
+    font-style: italic;
+    color: #ef5a00;
+  }
+
+  .rightside-footer {
+    display: flex;
+    justify-content: center;
+    color: white;
+    margin-top: 1rem;
+  }
+
+  .rightside-footer div {
+    padding: 0 0.5rem;
+  }
+
+  .rightside-footer a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .WelcomeButtons button{
+    background-color: transparent;
+    color: #ef5a00;
+    border: 1px solid #ef5a00;
+    border-radius: 1vh;
+    padding: 1vh;
+    cursor: pointer;
+    transition: background-color 0.5s ease-in-out;
+  }
+
+  .WelcomeButtons button:hover {
+    background-color: white
+  }
+
+  .WelcomeButtons h3{
+    margin-top: 0;
+    color: #efaf00;
+  }
+
+  .loggedInContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .loggedInButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .loggedInButton {
+    background-color: transparent;
+    color: #ef5a00;
+    border: 1px solid #ef5a00;
+    border-radius: 1vh;
+    padding: 1vh;
+    cursor: pointer;
+    transition: background-color 0.5s ease-in-out;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    width: 25vw;
+    height: 10vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+
+  .loggedInButton:hover {
+    background-color: white;
+  }
+
+  .loggedInContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .loggedInContainer h2{
+    color: #efaf00;
+  }
