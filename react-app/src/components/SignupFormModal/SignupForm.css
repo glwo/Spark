@@ -1,0 +1,86 @@
+.SignUpFormModal {
+    display: flex;
+    position: fixed;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 25px;
+    justify-content: center;
+    padding: 50px;
+    animation: modalRise 0.5s forwards;
+  }
+
+  @keyframes modalRise {
+    0% {
+      bottom: -100%;
+    }
+    100% {
+      bottom: 15%;
+    }
+  }
+
+  .SignUpFormModal h1 {
+    color: #ef5a00;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .SignUpFormModal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Add this line to center the buttons */
+  }
+
+  .SignUpFormModal ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .SignUpFormModal ul li {
+    color: #ef5a00;
+    font-size: 1rem;
+  }
+
+  .SignUpFormModal label {
+    color: #ef5a00;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .SignUpFormModal input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ef5a00;
+    border-radius: 1vh;
+    margin-bottom: 1rem;
+  }
+
+  .SignUpFormModal button {
+    background-color: transparent;
+    color: #ef5a00;
+    border: 1px solid #ef5a00;
+    border-radius: 1vh;
+    padding: 1vh;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+  }
+
+  .SignUpFormModal button:hover {
+    color: black;
+    border-color: black;
+    border-width: 1px;
+  }
+
+  .SignUpFormModal div {
+    padding: 10px;
+    width: 12.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

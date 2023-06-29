@@ -40,7 +40,6 @@ function LoginFormModal() {
         if (data && data.errors) setErrors(data.errors);
       }
     );
-    history.push("/recipes")
   }
 
   return (
