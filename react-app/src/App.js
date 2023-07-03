@@ -7,6 +7,7 @@ import HomePage from "./components/HomePage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,6 +30,9 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
+          {/* <Route path="/progress">
+            <ProgressPage />
+          </Route> */}
           <Route exact path="/">
             <HomePage />
           </Route>
