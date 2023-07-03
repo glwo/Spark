@@ -34,7 +34,7 @@ const initialState = {
 export const fetchProgress = () => async (dispatch) => {
 	try {
 		// Fetch progress data from the server
-		const response = await fetch("/api/progress");
+		const response = await fetch("/api/progress/");
 		if (response.ok) {
 			const data = await response.json();
 			dispatch(setProgress(data.progressList));
