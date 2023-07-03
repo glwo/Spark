@@ -6,6 +6,7 @@ import LoginFormPage from "./components/LoginFormPage";
 import HomePage from "./components/HomePage";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import ProgressPage from "./components/ProgressPage";
 
 
 function App() {
@@ -30,9 +31,9 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          {/* <Route path="/progress">
+          <Route path="/progress">
             <ProgressPage />
-          </Route> */}
+          </Route>
           <Route exact path="/">
             <HomePage />
           </Route>

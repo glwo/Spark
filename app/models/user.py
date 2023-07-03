@@ -18,6 +18,8 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
 
+    progress = db.relationship('Progress', back_populates='user')
+
     @property
     def password(self):
         return self.hashed_password
@@ -35,4 +37,5 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email,
             'img_url': self.img_url,
+            # 'progress':self.progress.to_dict()
         }

@@ -7,8 +7,8 @@ class Progress(db.Model):
     __tablename__ = 'progress'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    progress_date = db.Column(db.Date, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False)
+    progress_date = db.Column(db.DateTime, nullable=False)
     weight = db.Column(db.Integer, nullable=False)
     body_fat_percentage = db.Column(db.Integer, nullable=False)
     height = db.Column(db.Integer, nullable=False)
@@ -17,7 +17,7 @@ class Progress(db.Model):
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
 
-    user = db.relationship('User', backref='progress')
+    user = db.relationship('User', back_populates='progress')
 
     def to_dict(self):
         return {
