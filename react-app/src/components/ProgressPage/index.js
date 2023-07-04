@@ -1,50 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchProgress } from '../../store/progress';
 
 const ProgressGraph = () => {
   const user = useSelector((state) => state.session.user);
+  const allProgressData = useSelector((state) => state.progress.progressList.progress_entries);
   const dispatch = useDispatch();
-  const [progressData, setProgressData] = useState([]);
 
   useEffect(() => {
     dispatch(fetchProgress());
   }, [dispatch]);
 
-  const renderLineGraph = () => {
-    if (progressData.length === 0) {
-      return <p>No progress data available.</p>;
-    }
+  if (!allProgressData) {
+    return null; // Return early if progress data is not yet available
+  }
 
-    const graphWidth = 600;
-    const graphHeight = 400;
-    const maxValue = Math.max(...progressData.map((entry) => entry.weight));
-    const dataPoints = progressData.map((entry) => entry.weight);
+  const progressData = Object.values(allProgressData).filter(
+    (progress) => progress.user_id === user.id
+  );
 
-    const xScale = graphWidth / (dataPoints.length - 1);
-    const yScale = graphHeight / maxValue;
+  if (!progressData.length) {
+    return <p>No progress data available.</p>; // Display a message if no progress data is found for the user
+  }
 
-    const path = dataPoints
-      .map((value, index) => `${index * xScale},${graphHeight - value * yScale}`)
-      .join(' ');
+  const graphWidth = 600;
+  const graphHeight = 400;
 
-    return (
-      <svg width={graphWidth} height={graphHeight}>
-        <polyline
-          points={path}
-          fill="none"
-          stroke="#8884d8"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-    );
-  };
+  // Extract progress dates and weights
+  const dates = progressData.map((entry) => new Date(entry.progress_date));
+  const weights = progressData.map((entry) => entry.weight);
+
+  // Determine the range of dates and weights
+  const minDate = Math.min(...dates);
+  const maxDate = Math.max(...dates);
+  const minValue = Math.min(...weights);
+  const maxValue = Math.max(...weights);
+
+  // Calculate scales for positioning data points
+  const xScale = graphWidth / (maxDate - minDate);
+  const yScale = graphHeight / (maxValue - minValue);
 
   return (
     <div>
       <h2>Progress Graph</h2>
-      {renderLineGraph()}
+      <svg width={graphWidth} height={graphHeight}>
+        {dates.map((date, index) => {
+          const x = (date - minDate) * xScale;
+          const y = graphHeight - (weights[index] - minValue) * yScale;
+          return (
+            <circle
+              key={index}
+              cx={x}
+              cy={y}
+              r={4}
+              fill="#8884d8"
+              stroke="#8884d8"
+            />
+          );
+        })}
+      </svg>
     </div>
   );
 };
