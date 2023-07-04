@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProgress } from '../../store/progress';
+import { Line } from 'react-chartjs-2';
+import Chart from 'chart.js';
+import moment from 'moment';
+
 
 const ProgressGraph = () => {
   const user = useSelector((state) => state.session.user);
@@ -23,42 +27,50 @@ const ProgressGraph = () => {
     return <p>No progress data available.</p>; // Display a message if no progress data is found for the user
   }
 
-  const graphWidth = 600;
-  const graphHeight = 400;
+  const chartData = {
+    labels: progressData.map((entry) => moment(entry.progress_date).toDate()),
+    datasets: [
+      {
+        label: 'Weight',
+        data: progressData.map((entry) => entry.weight),
+        fill: false,
+        borderColor: '#8884d8',
+      },
+      {
+        label: 'Body Fat Percentage',
+        data: progressData.map((entry) => entry.body_fat_percentage),
+        fill: false,
+        borderColor: '#82ca9d',
+      },
+    ],
+  };
 
-  // Extract progress dates and weights
-  const dates = progressData.map((entry) => new Date(entry.progress_date));
-  const weights = progressData.map((entry) => entry.weight);
+  const chartOptions = {
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          tooltipFormat: 'll',
+          displayFormats: {
+            day: 'MMM D', // Use the desired format for displaying the date
+          },
+        },
+        ticks: {
+          maxTicksLimit: 10,
+        },
+      },
+    },
+  };
 
-  // Determine the range of dates and weights
-  const minDate = Math.min(...dates);
-  const maxDate = Math.max(...dates);
-  const minValue = Math.min(...weights);
-  const maxValue = Math.max(...weights);
-
-  // Calculate scales for positioning data points
-  const xScale = graphWidth / (maxDate - minDate);
-  const yScale = graphHeight / (maxValue - minValue);
 
   return (
     <div>
       <h2>Progress Graph</h2>
-      <svg width={graphWidth} height={graphHeight}>
-        {dates.map((date, index) => {
-          const x = (date - minDate) * xScale;
-          const y = graphHeight - (weights[index] - minValue) * yScale;
-          return (
-            <circle
-              key={index}
-              cx={x}
-              cy={y}
-              r={4}
-              fill="#8884d8"
-              stroke="#8884d8"
-            />
-          );
-        })}
-      </svg>
+      {progressData.length > 0 ? (
+        <Line data={chartData} options={chartOptions} />
+      ) : (
+        <p>No progress data available.</p>
+      )}
     </div>
   );
 };
