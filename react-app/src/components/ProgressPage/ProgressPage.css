@@ -1,0 +1,50 @@
+.graph-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.graph-container h2{
+    color: #ef5a00;
+}
+
+.graph-container {
+    text-align: center;
+  }
+
+  .variable-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .variable-selector button {
+    margin: 0 10px;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  .variable-selector button {
+    background-color: transparent;
+    color: #ef5a00;
+    border: 1px solid #ef5a00;
+    border-radius: 1vh;
+    padding: 1vh;
+    cursor: pointer;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+  }
+
+  .variable-selector button:hover {
+    color: black;
+    border-color: black;
+    border-width: 1px;
+  }
+
+  .variable-selector button.active {
+    color: black;
+    border-color: black;
+    border-width: 1px;
+  }
