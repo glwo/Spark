@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProgress } from '../../store/progress';
+import { fetchProgress, createProgress} from '../../store/progress'; // Assuming you have an action to add new progress data
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js';
 import moment from 'moment';
@@ -11,6 +11,11 @@ const ProgressGraph = () => {
   const allProgressData = useSelector((state) => state.progress.progressList.progress_entries);
   const dispatch = useDispatch();
   const [selectedVariable, setSelectedVariable] = useState('weight'); // Default selected variable is 'weight'
+  const [newProgressData, setNewProgressData] = useState({
+    weight: 0,
+    body_fat_percentage: 0,
+    metabolic_age: 0,
+  });
 
   useEffect(() => {
     dispatch(fetchProgress());
@@ -74,6 +79,16 @@ const ProgressGraph = () => {
     setSelectedVariable(variable);
   };
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setNewProgressData({ ...newProgressData, [name]: value });
+  };
+
+  const handleAddProgressData = () => {
+    dispatch(createProgress(newProgressData));
+    setNewProgressData({ weight: 0, body_fat_percentage: 0, metabolic_age: 0 });
+  };
+
   return (
     <div className="graph-container">
       <h2>Your Progress</h2>
@@ -102,6 +117,30 @@ const ProgressGraph = () => {
       ) : (
         <p>No progress data available.</p>
       )}
+
+      {/* Form for adding new progress data */}
+      <div className="add-progress-form">
+        <h3>Add New Progress Data</h3>
+        <input
+          type="number"
+          name="weight"
+          value={newProgressData.weight}
+          onChange={handleInputChange}
+        />
+        <input
+          type="number"
+          name="body_fat_percentage"
+          value={newProgressData.body_fat_percentage}
+          onChange={handleInputChange}
+        />
+        <input
+          type="number"
+          name="metabolic_age"
+          value={newProgressData.metabolic_age}
+          onChange={handleInputChange}
+        />
+        <button onClick={handleAddProgressData}>Add Data</button>
+      </div>
     </div>
   );
 };
