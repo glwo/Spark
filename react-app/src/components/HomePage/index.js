@@ -45,6 +45,9 @@ const HomePage = () => {
                 <Link to="/inspiration" className="loggedInButton">
                   Inspiration
                 </Link>
+                <Link to="/community" className="loggedInButton">
+                  Community
+                </Link>
               </div>
             </div>
           )}

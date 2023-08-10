@@ -5,3 +5,28 @@
 .hidden {
   display: none;
 }
+
+.MuiAppBar-colorPrimary {
+  background-color: #333;
+}
+
+.MuiToolbar-root {
+  display: flex;
+  justify-content: space-between;
+}
+
+.MuiTypography-root {
+  flex-grow: 1;
+}
+
+.MuiButtonBase-root {
+  color: white;
+}
+
+.MuiIconButton-root {
+  color: white;
+}
+
+.MuiIconButton-root:hover {
+  background-color: transparent;
+}

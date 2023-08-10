@@ -10,7 +10,6 @@
   .homePageContent {
     text-align: center;
     color: #fff;
-    margin-top: 2rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -35,10 +34,10 @@
   }
 
   .footer {
-    margin-top: auto;
+    margin-top: 13vh;
     text-align: center;
     color: white;
-    padding-bottom: 2rem;
+    /* padding-bottom: 2rem; */
   }
 
   .footer h3 {
@@ -83,9 +82,7 @@
 
   .loggedInContainer {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
   .loggedInButtons {
