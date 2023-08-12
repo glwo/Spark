@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProgress, createProgress} from '../../store/progress'; // Assuming you have an action to add new progress data
+import { fetchProgress, createProgress } from '../../store/progress'; // Assuming you have an action to add new progress data
 import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js';
 import moment from 'moment';
+import { Button, TextField, Typography } from '@mui/material';
+import { Container, Paper } from '@mui/material';
 import "./ProgressPage.css";
 
 const ProgressGraph = () => {
   const user = useSelector((state) => state.session.user);
   const allProgressData = useSelector((state) => state.progress.progressList.progress_entries);
   const dispatch = useDispatch();
-  const [selectedVariable, setSelectedVariable] = useState('weight'); // Default selected variable is 'weight'
+  const [selectedVariable, setSelectedVariable] = useState('weight');
   const [newProgressData, setNewProgressData] = useState({
     weight: 0,
     body_fat_percentage: 0,
@@ -22,16 +23,12 @@ const ProgressGraph = () => {
   }, [dispatch]);
 
   if (!allProgressData) {
-    return null; // Return early if progress data is not yet available
+    return null;
   }
 
   const progressData = Object.values(allProgressData).filter(
     (progress) => progress.user_id === user.id
   );
-
-  if (!progressData.length) {
-    return <p>No progress data available.</p>; // Display a message if no progress data is found for the user
-  }
 
   const getVariableLabel = (variable) => {
     switch (variable) {
@@ -50,8 +47,8 @@ const ProgressGraph = () => {
     labels: progressData.map((entry) => moment(entry.progress_date).toDate()),
     datasets: [
       {
-        label: getVariableLabel(selectedVariable), // Use the custom label for the selected variable
-        data: progressData.map((entry) => entry[selectedVariable]), // Access the selected variable dynamically
+        label: getVariableLabel(selectedVariable),
+        data: progressData.map((entry) => entry[selectedVariable]),
         fill: false,
         borderColor: '#efaf00',
       },
@@ -90,58 +87,63 @@ const ProgressGraph = () => {
   };
 
   return (
-    <div className="graph-container">
-      <h2>Your Progress</h2>
+    <Container className="graph-container">
+      <Typography variant="h4">Your Progress</Typography>
       <div className="variable-selector">
-        <button
-          className={selectedVariable === 'weight' ? 'active' : ''}
+        <Button
+          variant={selectedVariable === 'weight' ? 'contained' : 'outlined'}
           onClick={() => handleVariableChange('weight')}
         >
           {getVariableLabel('weight')}
-        </button>
-        <button
-          className={selectedVariable === 'body_fat_percentage' ? 'active' : ''}
+        </Button>
+        <Button
+          variant={selectedVariable === 'body_fat_percentage' ? 'contained' : 'outlined'}
           onClick={() => handleVariableChange('body_fat_percentage')}
         >
           {getVariableLabel('body_fat_percentage')}
-        </button>
-        <button
-          className={selectedVariable === 'metabolic_age' ? 'active' : ''}
+        </Button>
+        <Button
+          variant={selectedVariable === 'metabolic_age' ? 'contained' : 'outlined'}
           onClick={() => handleVariableChange('metabolic_age')}
         >
           {getVariableLabel('metabolic_age')}
-        </button>
+        </Button>
       </div>
       {progressData.length > 0 ? (
         <Line data={chartData} options={chartOptions} />
       ) : (
-        <p>No progress data available.</p>
+        <Typography>No progress data available.</Typography>
       )}
 
       {/* Form for adding new progress data */}
-      <div className="add-progress-form">
-        <h3>Add New Progress Data</h3>
-        <input
+      <Paper elevation={3} className="add-progress-form">
+        <Typography variant="h5">Add New Progress Data</Typography>
+        <TextField
           type="number"
           name="weight"
           value={newProgressData.weight}
           onChange={handleInputChange}
+          label="Weight"
         />
-        <input
+        <TextField
           type="number"
           name="body_fat_percentage"
           value={newProgressData.body_fat_percentage}
           onChange={handleInputChange}
+          label="Body Fat Percentage"
         />
-        <input
+        <TextField
           type="number"
           name="metabolic_age"
           value={newProgressData.metabolic_age}
           onChange={handleInputChange}
+          label="Metabolic Age"
         />
-        <button onClick={handleAddProgressData}>Add Data</button>
-      </div>
-    </div>
+        <Button onClick={handleAddProgressData} variant="contained" color="primary">
+          Add Data
+        </Button>
+      </Paper>
+    </Container>
   );
 };
 

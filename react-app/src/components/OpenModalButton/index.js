@@ -8,10 +8,14 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 function OpenModalButton({
   modalComponent,
   buttonText,
+  onItemClick, // Add onItemClick prop
 }) {
   const { setModalContent } = useModal();
 
   const onClick = () => {
+    if (onItemClick) {
+      onItemClick(); // Call the provided function to close the menu
+    }
     setModalContent(modalComponent);
   };
 

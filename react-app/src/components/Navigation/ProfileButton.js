@@ -28,6 +28,10 @@ function ProfileButton({ user }) {
     history.push("/");
   };
 
+  const handleCloseMenu = () => {
+    closeMenu();
+  };
+
   return (
     <>
       <IconButton onClick={openMenu}>
@@ -50,12 +54,14 @@ function ProfileButton({ user }) {
             <MenuItem>
               <OpenModalButton
                 buttonText="Log In"
+                onItemClick={handleCloseMenu}
                 modalComponent={<LoginFormModal />}
               />
             </MenuItem>
             <MenuItem>
               <OpenModalButton
                 buttonText="Sign Up"
+                onItemClick={handleCloseMenu}
                 modalComponent={<SignupFormModal />}
               />
             </MenuItem>
