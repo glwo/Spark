@@ -1,22 +1,20 @@
 .homePageContainer {
-    background-color: #222;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
+  background-color: #222;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; /* Changed */
+}
 
-  .homePageContent {
-    text-align: center;
-    color: #fff;
-    margin-top: 2rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Updated */
-  }
+.homePageContent {
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Updated */
+  flex-grow: 1;
+  margin-bottom: 2rem; /* Added */
+}
 
   .welcomeMessage {
     font-size: 3rem;
@@ -31,11 +29,10 @@
   }
 
   .sparkContainer {
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
   }
 
   .footer {
-    margin-top: auto;
     text-align: center;
     color: white;
     padding-bottom: 2rem;
@@ -83,9 +80,7 @@
 
   .loggedInContainer {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
   .loggedInButtons {

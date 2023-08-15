@@ -1,23 +1,30 @@
 import React from 'react';
+import { Button } from '@mui/material';
 import { useModal } from '../../context/Modal';
+import { useDispatch } from 'react-redux';
+import { login } from '../../store/session'; // Import the login action
+import { IconButton, Menu, MenuItem } from "@mui/material";
 
 function OpenModalButton({
-  modalComponent, // component to render inside the modal
-  buttonText, // text of the button that opens the modal
-  onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
-  onModalClose // optional: callback function that will be called once the modal is closed
+  modalComponent,
+  buttonText,
+  onItemClick, // Add onItemClick prop
 }) {
-  const { setModalContent, setOnModalClose } = useModal();
+  const { setModalContent } = useModal();
 
   const onClick = () => {
-    if (onModalClose) setOnModalClose(onModalClose);
+    if (onItemClick) {
+      onItemClick(); // Call the provided function to close the menu
+    }
     setModalContent(modalComponent);
-    if (onButtonClick) onButtonClick();
   };
 
   return (
-    <button onClick={onClick}>{buttonText}</button>
+    <MenuItem onClick={onClick}>
+      {buttonText}
+    </MenuItem>
   );
 }
+
 
 export default OpenModalButton;
