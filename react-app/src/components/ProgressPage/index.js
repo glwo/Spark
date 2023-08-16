@@ -18,6 +18,8 @@ const ProgressGraph = () => {
     metabolic_age: 0,
   });
 
+  // console.log(current_user)
+
   useEffect(() => {
     dispatch(fetchProgress());
   }, [dispatch]);

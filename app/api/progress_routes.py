@@ -5,7 +5,7 @@ from app.models import db, Progress
 progress_routes = Blueprint('progress', __name__)
 
 @progress_routes.route('/')
-# @login_required
+@login_required
 def get_all_progress():
     """
     Query all progress entries for the current user and return them in a list of progress dictionaries
