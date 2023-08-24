@@ -118,7 +118,7 @@ const ProgressGraph = () => {
       )}
 
       {/* Form for adding new progress data */}
-      <Paper elevation={3} className="add-progress-form">
+      {/* <Paper elevation={3} className="add-progress-form">
         <Typography variant="h5">Add New Progress Data</Typography>
         <TextField
           type="number"
@@ -144,7 +144,7 @@ const ProgressGraph = () => {
         <Button onClick={handleAddProgressData} variant="contained" color="primary">
           Add Data
         </Button>
-      </Paper>
+      </Paper> */}
     </Container>
   );
 };
