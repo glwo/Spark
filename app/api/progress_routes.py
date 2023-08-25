@@ -2,10 +2,12 @@ from flask import Blueprint, request
 from flask_login import login_required, current_user
 from app.models import db, Progress
 from app.forms import progress_form
+from datetime import datetime
+
 
 progress_routes = Blueprint('progress', __name__)
 
-@progress_routes.route('/')
+@progress_routes.route('/', methods=["GET"])
 def get_all_progress():
     """
     Query all progress entries for the current user and return them in a list of progress dictionaries
@@ -19,13 +21,13 @@ def create_progress():
     """
     Create a new progress entry for the current user and return that entry in a dictionary
     """
-    form = progress_form()
+    form = progress_form.ProgressForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     # Add and commit new business
     if form.validate_on_submit():
         newProgress = Progress(
         user_id = current_user.id,
-        progress_date = form.data['progress_date'],
+        progress_date = datetime.strptime(form.data['progress_date'], '%Y-%m-%d'),
         weight = form.data['weight'],
         body_fat_percentage = form.data['body_fat_percentage'],
         height = form.data['height'],

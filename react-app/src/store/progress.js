@@ -49,9 +49,8 @@ export const fetchProgress = () => async (dispatch) => {
 };
 
 export const createProgress = (progressData) => async (dispatch) => {
-	try {
 		// Send a POST request to create new progress data
-		const response = await fetch("/api/progress", {
+		const response = await fetch("/api/progress/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -60,13 +59,14 @@ export const createProgress = (progressData) => async (dispatch) => {
 		});
 		if (response.ok) {
 			const data = await response.json();
-			dispatch(addProgress(data.progress));
+			dispatch(addProgress(data));
+			return data
 		} else {
-			throw new Error("Failed to create progress data");
-		}
-	} catch (error) {
-		console.error(error);
-	}
+			const data = await response.json();
+			if (data.errors) {
+			  return data
+			}
+		  }
 };
 
 export const alterProgress = (progressId, progressData) => async (dispatch) => {
