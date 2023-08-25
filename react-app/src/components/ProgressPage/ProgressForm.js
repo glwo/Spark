@@ -4,22 +4,15 @@ import { createProgress } from '../../store/progress';
 import { useHistory } from 'react-router-dom';
 import './ProgressForm.css'
 
-export default function CreateBusiness() {
+export default function CreateProgress({ onClose }) {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.session)
   const history = useHistory();
-  const [store_name, setStoreName] = useState('');
-  const [description, setDescription] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [address, setAddress] = useState('');
-  const [zipcode, setZipcode] = useState();
-  const [business_type, setBusinessType] = useState('restaurant');
-  const [opening_time, setOpeningTime] = useState('')
-  const [closing_time, setClosingTime] = useState('');
-  const [phone_num, setPhoneNum] = useState();
-  const [image_url, setImageUrl] = useState('');
-  const [preview, setPreview] = useState("True");
+  const [progress_date, setProgressDate] = useState('');
+  const [weight, setWeight] = useState('');
+  const [body_fat_percentage, setBodyFat] = useState('');
+  const [height, setHeight] = useState('');
+  const [age, setAge] = useState('');
+  const [metabolic_age, setMetabolicAge] = useState();
   const [errors, setErrors] = useState([]);
   const currentUser = useSelector(state => state.session.user)
 
@@ -28,26 +21,21 @@ export default function CreateBusiness() {
     setErrors([]);
     if (currentUser == undefined) return history.push('/login')
 
-    const business = {
-      store_name,
-      description,
-      city,
-      state,
-      address,
-      zipcode,
-      business_type,
-      opening_time,
-      closing_time,
-      phone_num,
-      image_url
+    const progress = {
+      progress_date,
+      weight,
+      body_fat_percentage,
+      height,
+      age,
+      metabolic_age
     };
 
-    const data = await dispatch(thunkCreateBusiness(business))
+    const data = await dispatch(createProgress(progress))
     if (data.errors) {
       setErrors(data.errors)
     } else {
       setErrors([]);
-      history.push(`/business/${data.id}`);
+      onClose();
     }
   }
 
@@ -62,104 +50,56 @@ export default function CreateBusiness() {
             {errors.map((error, idx) => <li key={idx}>{error}</li>)}
           </ul>
           <div className="input-form">
-            <label>Business Name:</label>
+            <label>Date:</label>
             <input
-              type='text'
-              value={store_name}
-              onChange={(e) => setStoreName(e.target.value)}
+              type='date'
+              value={progress_date}
+              onChange={(e) => setProgressDate(e.target.value)}
               required
             />
           </div>
           <div className="input-form">
-            <label>Description:</label>
-            <input
-              type='text'
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-form">
-            <label>City:</label>
-            <input
-              type='text'
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-form">
-            <label>State:</label>
-            <input
-              type='text'
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-form">
-            <label>Address:</label>
-            <input
-              type='text'
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-form">
-            <label>Zipcode:</label>
+            <label>Weight:</label>
             <input
               type='number'
-              value={zipcode}
-              onChange={(e) => setZipcode(e.target.value)}
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
               required
             />
           </div>
           <div className="input-form">
-            <label>Business Type:</label>
-            <select
-              value={business_type}
-              onChange={(e) => setBusinessType(e.target.value)}
-            >
-              <option value="restaurant">Restaurant</option>
-              <option value="auto">Auto Service</option>
-              <option value="home">Home Service</option>
-              <option value="salon">Hair Salon</option>
-            </select>
-          </div>
-          <div className="input-form">
-            <label>Opening Time:</label>
+            <label>Body Fat Percentage:</label>
             <input
               type='text'
-              value={opening_time}
-              onChange={(e) => setOpeningTime(e.target.value)}
+              value={body_fat_percentage}
+              onChange={(e) => setBodyFat(e.target.value)}
               required
             />
           </div>
           <div className="input-form">
-            <label>Closing Time:</label>
+            <label>Height:</label>
             <input
               type='text'
-              value={closing_time}
-              onChange={(e) => setClosingTime(e.target.value)}
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
               required
             />
           </div>
           <div className="input-form">
-            <label>Phone Number:</label>
+            <label>Age:</label>
             <input
-              type='text'
-              value={phone_num}
-              onChange={(e) => setPhoneNum(e.target.value)}
+              type='number'
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
               required
             />
           </div>
           <div className="input-form">
-            <label>Business Image:</label>
+            <label>Metabolic Age:</label>
             <input
-              type='text'
-              value={image_url}
-              onChange={(e) => setImageUrl(e.target.value)}
+              type='number'
+              value={metabolic_age}
+              onChange={(e) => setMetabolicAge(e.target.value)}
               required
             />
           </div>
@@ -167,9 +107,6 @@ export default function CreateBusiness() {
             <button className='create-button' type="submit">Create New Business</button>
           </div>
         </form>
-      </div>
-      <div className='image-splash'>
-        <img src={createBusinessImage} />
       </div>
     </div>
   )
