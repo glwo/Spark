@@ -50,6 +50,7 @@ export const fetchProgress = () => async (dispatch) => {
 
 export const createProgress = (progressData) => async (dispatch) => {
 		// Send a POST request to create new progress data
+		// console.log("Before dispatching action:", progressData);
 		const response = await fetch("/api/progress/", {
 			method: "POST",
 			headers: {
@@ -59,10 +60,12 @@ export const createProgress = (progressData) => async (dispatch) => {
 		});
 		if (response.ok) {
 			const data = await response.json();
+			// console.log("After dispatching action (success):", data);
 			dispatch(addProgress(data));
 			return data
 		} else {
 			const data = await response.json();
+			// console.log("After dispatching action (error):", data);
 			if (data.errors) {
 			  return data
 			}
@@ -111,8 +114,13 @@ export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_PROGRESS:
 			return { ...state, progressList: action.payload };
-		case ADD_PROGRESS:
-			return { ...state, progressList: [...state.progressList, action.payload] };
+			case ADD_PROGRESS:
+				// console.log(state)
+				// console.log("ADD_PROGRESS action payload:", action.payload);
+				return {
+				  ...state,
+				  progressList: [...state.progressList.progress_entries || [], action.payload],
+				};
 		case UPDATE_PROGRESS:
 			return {
 				...state,

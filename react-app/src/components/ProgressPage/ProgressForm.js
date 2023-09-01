@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createProgress } from '../../store/progress';
+import { createProgress, fetchProgress } from '../../store/progress';
 import { useHistory } from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import moment from 'moment';
@@ -33,17 +33,23 @@ const CreateProgress = ({ onClose }) => {
       metabolic_age,
     };
 
-    console.log(progress)
+    // console.log(progress)
 
     const data = await dispatch(createProgress(progress));
     if (data.errors) {
       setErrors(data.errors);
     } else {
+      setProgressDate('');
+      setWeight('');
+      setBodyFat('');
+      setHeight('');
+      setAge('');
+      setMetabolicAge('');
       setErrors([]);
       onClose();
+
+      dispatch(fetchProgress());
     }
-    setErrors([]);
-      onClose();
   };
 
   return (

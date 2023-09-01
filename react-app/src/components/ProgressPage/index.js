@@ -3,15 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProgress, createProgress } from "../../store/progress"; // Assuming you have an action to add new progress data
 import { Line } from "react-chartjs-2";
 import moment from "moment";
-import { Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Button, Container, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import CreateProgress from "./ProgressForm";
 import "./ProgressPage.css";
 
 const ProgressGraph = () => {
   const user = useSelector((state) => state.session.user);
   const allProgressData = useSelector(
-    (state) => state.progress.progressList.progress_entries
+    (state) => state.progress.progressList.progress_entries || []
   );
+
   const dispatch = useDispatch();
   const [selectedVariable, setSelectedVariable] = useState("weight");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +27,13 @@ const ProgressGraph = () => {
 
   const progressData = Object.values(allProgressData).filter(
     (progress) => progress.user_id === user.id
-  );
+  ) || [];
+
+  if(!progressData){
+    return null
+  }
+
+
 
   const getVariableLabel = (variable) => {
     switch (variable) {
