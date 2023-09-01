@@ -49,9 +49,9 @@ export const fetchProgress = () => async (dispatch) => {
 };
 
 export const createProgress = (progressData) => async (dispatch) => {
-	try {
 		// Send a POST request to create new progress data
-		const response = await fetch("/api/progress", {
+		// console.log("Before dispatching action:", progressData);
+		const response = await fetch("/api/progress/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -60,13 +60,16 @@ export const createProgress = (progressData) => async (dispatch) => {
 		});
 		if (response.ok) {
 			const data = await response.json();
-			dispatch(addProgress(data.progress));
+			// console.log("After dispatching action (success):", data);
+			dispatch(addProgress(data));
+			return data
 		} else {
-			throw new Error("Failed to create progress data");
-		}
-	} catch (error) {
-		console.error(error);
-	}
+			const data = await response.json();
+			// console.log("After dispatching action (error):", data);
+			if (data.errors) {
+			  return data
+			}
+		  }
 };
 
 export const alterProgress = (progressId, progressData) => async (dispatch) => {
@@ -111,8 +114,13 @@ export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_PROGRESS:
 			return { ...state, progressList: action.payload };
-		case ADD_PROGRESS:
-			return { ...state, progressList: [...state.progressList, action.payload] };
+			case ADD_PROGRESS:
+				// console.log(state)
+				// console.log("ADD_PROGRESS action payload:", action.payload);
+				return {
+				  ...state,
+				  progressList: [...state.progressList.progress_entries || [], action.payload],
+				};
 		case UPDATE_PROGRESS:
 			return {
 				...state,

@@ -1,11 +1,13 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
 from app.models import db, Progress
+from app.forms import progress_form
+from datetime import datetime
+
 
 progress_routes = Blueprint('progress', __name__)
 
-@progress_routes.route('/')
-# @login_required
+@progress_routes.route('/', methods=["GET"])
 def get_all_progress():
     """
     Query all progress entries for the current user and return them in a list of progress dictionaries
@@ -19,19 +21,23 @@ def create_progress():
     """
     Create a new progress entry for the current user and return that entry in a dictionary
     """
-    data = request.json
-    new_progress_entry = Progress(
-        user_id=current_user.id,
-        progress_date=data['progress_date'],
-        weight=data['weight'],
-        body_fat_percentage=data['body_fat_percentage'],
-        height=data['height'],
-        age=data['age'],
-        metabolic_age=data['metabolic_age']
-    )
-    db.session.add(new_progress_entry)
-    db.session.commit()
-    return new_progress_entry.to_dict(), 201
+    form = progress_form.ProgressForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    # Add and commit new business
+    if form.validate_on_submit():
+        newProgress = Progress(
+        user_id = current_user.id,
+        progress_date = datetime.strptime(form.data['progress_date'], '%Y-%m-%d'),
+        weight = form.data['weight'],
+        body_fat_percentage = form.data['body_fat_percentage'],
+        height = form.data['height'],
+        age = form.data['age'],
+        metabolic_age = form.data['metabolic_age']
+        )
+        db.session.add(newProgress)
+        db.session.commit()
+
+        return newProgress.to_dict(), 201
 
 @progress_routes.route('/<int:id>', methods=["PUT"])
 @login_required
