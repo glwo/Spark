@@ -1,39 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProgress, alterProgress } from "../../store/progress"; // Assuming you have an action to add new progress data
+import { fetchProgress, alterProgress } from "../../store/progress";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
-import { Button, Container, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@mui/material";
 import CreateProgress from "./ProgressForm";
 import "./ProgressPage.css";
 
 const ProgressGraph = () => {
   const user = useSelector((state) => state.session.user);
-  const allProgressData = useSelector(
-    (state) => state.progress.progressList.progress_entries || []
-  );
 
   const dispatch = useDispatch();
   const [selectedVariable, setSelectedVariable] = useState("weight");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddProgressModalOpen, setIsAddProgressModalOpen] = useState(false);
+  const [selectedProgress, setSelectedProgress] = useState(null);
+  const [isViewProgressModalOpen, setIsViewProgressModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProgress());
   }, [dispatch]);
 
-  if (!allProgressData) {
-    return null;
-  }
-
-  const progressData = Object.values(allProgressData).filter(
-    (progress) => progress.user_id === user.id
-  ) || [];
-
-  if(!progressData){
-    return null
-  }
-
-
+  const progressData =
+    useSelector((state) =>
+      Object.values(state.progress.progressList.progress_entries || []).filter(
+        (progress) => progress.user_id === user.id
+      )
+    ) || [];
 
   const getVariableLabel = (variable) => {
     switch (variable) {
@@ -81,12 +84,21 @@ const ProgressGraph = () => {
     setSelectedVariable(variable);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+  const handleOpenAddProgressModal = () => {
+    setIsAddProgressModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseAddProgressModal = () => {
+    setIsAddProgressModalOpen(false);
+  };
+
+  const handleOpenViewProgressModal = (selectedEntry) => {
+    setSelectedProgress(selectedEntry);
+    setIsViewProgressModalOpen(true);
+  };
+
+  const handleCloseViewProgressModal = () => {
+    setIsViewProgressModalOpen(false);
   };
 
   return (
@@ -119,17 +131,72 @@ const ProgressGraph = () => {
         </Button>
       </div>
       {progressData.length > 0 ? (
-        <Line data={chartData} options={chartOptions} />
+        <div>
+          <Line
+            data={chartData}
+            options={chartOptions}
+            onElementsClick={(elems) => {
+              if (elems.length > 0) {
+                const clickedIndex = elems[0].index;
+                const clickedTimestamp = chartData.labels[clickedIndex];
+                console.log(clickedTimestamp);
+
+                // Find the data point with the exact same timestamp as the clicked timestamp
+                const selectedEntry = progressData.find((entry) =>
+                  moment(entry.progress_date).isSame(
+                    moment(clickedTimestamp),
+                    "day"
+                  )
+                );
+
+                console.log("Selected Entry:", selectedEntry); // Debugging
+                handleOpenViewProgressModal(selectedEntry);
+              }
+            }}
+          />
+          <Dialog
+            open={isViewProgressModalOpen}
+            onClose={handleCloseViewProgressModal}
+          >
+            <DialogTitle>Progress Details</DialogTitle>
+            <DialogContent>
+              {selectedProgress ? (
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Date</TableCell>
+                      <TableCell>
+                        {moment(selectedProgress.progress_date).format("ll")}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        {getVariableLabel(selectedVariable)}
+                      </TableCell>
+                      <TableCell>
+                        {selectedProgress[selectedVariable]}
+                      </TableCell>
+                    </TableRow>
+                    {/* Add more rows for additional progress data */}
+                  </TableBody>
+                </Table>
+              ) : (
+                <Typography>No progress data available.</Typography>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
       ) : (
         <Typography>No progress data available.</Typography>
       )}
-
-      <Button onClick={handleOpenModal}>Add Progress</Button>
-      <Dialog open={isModalOpen} onClose={handleCloseModal}>
+      <Button onClick={handleOpenAddProgressModal}>Add Progress</Button>
+      <Dialog
+        open={isAddProgressModalOpen}
+        onClose={handleCloseAddProgressModal}
+      >
         <DialogTitle>Add New Progress Data</DialogTitle>
         <DialogContent>
-          <CreateProgress onClose={handleCloseModal} />{" "}
-          {/* Pass onClose prop */}
+          <CreateProgress onClose={handleCloseAddProgressModal} />
         </DialogContent>
       </Dialog>
     </Container>
