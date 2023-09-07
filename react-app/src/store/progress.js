@@ -72,25 +72,25 @@ export const createProgress = (progressData) => async (dispatch) => {
 		  }
 };
 
-export const alterProgress = (progressId, progressData) => async (dispatch) => {
-	try {
-		// Send a PUT request to update the progress data
-		const response = await fetch(`/api/progress/${progressId}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(progressData),
-		});
-		if (response.ok) {
-			const data = await response.json();
-			dispatch(updateProgress(data.progress));
-		} else {
-			throw new Error("Failed to update progress data");
+export const alterProgress = (data) => async (dispatch) => {
+	const response = await fetch(`/api/progress/${data.id}`, {
+		method: "PUT",
+		headers: {
+		  'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	  });
+
+	  if (response.ok) {
+		const progress = await response.json();
+		dispatch(updateProgress(progress))
+		return progress;
+	  } else {
+		const data = await response.json();
+		if (data.errors) {
+		  return data
 		}
-	} catch (error) {
-		console.error(error);
-	}
+	  }
 };
 
 export const delProgress = (progressId) => async (dispatch) => {

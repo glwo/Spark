@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProgress, createProgress } from "../../store/progress"; // Assuming you have an action to add new progress data
+import { fetchProgress, alterProgress } from "../../store/progress"; // Assuming you have an action to add new progress data
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import { Button, Container, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";

@@ -45,20 +45,22 @@ def update_progress(id):
     """
     Update a progress entry of the current user and return that entry in a dictionary
     """
-    data = request.json
-    progress_entry = Progress.query.filter_by(id=id, user_id=current_user.id).first()
+    progress_entry = Progress.query.get(id)
+    form = progress_form.ProgressForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     if not progress_entry:
         return {"Error": "Progress entry not found"}, 404
 
-    progress_entry.progress_date = data['progress_date']
-    progress_entry.weight = data['weight']
-    progress_entry.body_fat_percentage = data['body_fat_percentage']
-    progress_entry.height = data['height']
-    progress_entry.age = data['age']
-    progress_entry.metabolic_age = data['metabolic_age']
+    if form.validate_on_submit():
+        progress_entry.progress_date = form.data['progress_date']
+        progress_entry.weight = form.data['weight']
+        progress_entry.body_fat_percentage = form.data['body_fat_percentage']
+        progress_entry.height = form.data['height']
+        progress_entry.age = form.data['age']
+        progress_entry.metabolic_age = form.data['metabolic_age']
 
-    db.session.commit()
-    return progress_entry.to_dict(), 200
+        db.session.commit()
+        return progress_entry.to_dict(), 200
 
 @progress_routes.route('/<int:id>', methods=["DELETE"])
 @login_required
