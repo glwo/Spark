@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { Profiler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProgress, alterProgress } from "../../store/progress";
+import { fetchProgress, alterProgress, delProgress } from "../../store/progress";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import {
@@ -52,7 +52,9 @@ const ProgressGraph = () => {
   };
 
   const chartData = {
-    labels: progressData.map((entry) => moment(entry.progress_date).toDate()),
+    labels: progressData.map(
+      (entry) => moment.utc(entry.progress_date).toISOString().split(".")[0]
+    ), // Remove milliseconds
     datasets: [
       {
         label: getVariableLabel(selectedVariable),
@@ -101,6 +103,12 @@ const ProgressGraph = () => {
     setIsViewProgressModalOpen(false);
   };
 
+  // console.log("Progress Dates:", progressData.map((entry) => entry.progress_date));
+  // console.log("Chart Labels:", chartData.labels);
+  // console.log("Selected Entry:", selectedEntry);
+
+  // console.log("Progress Data:", progressData);
+
   return (
     <Container className="graph-container">
       <Typography variant="h4">Your Progress</Typography>
@@ -137,20 +145,35 @@ const ProgressGraph = () => {
             options={chartOptions}
             onElementsClick={(elems) => {
               if (elems.length > 0) {
-                const clickedIndex = elems[0].index;
+                const clickedIndex = elems[0]._index;
                 const clickedTimestamp = chartData.labels[clickedIndex];
-                console.log(clickedTimestamp);
-
-                // Find the data point with the exact same timestamp as the clicked timestamp
-                const selectedEntry = progressData.find((entry) =>
+                // console.log(clickedIndex);
+                // console.log(progressData);
+                // console.log(chartData.labels);
+                // Filter progressData to find entries with the same day as the clicked timestamp
+                const selectedEntry = progressData.filter((entry) =>
                   moment(entry.progress_date).isSame(
                     moment(clickedTimestamp),
                     "day"
                   )
                 );
 
-                console.log("Selected Entry:", selectedEntry); // Debugging
-                handleOpenViewProgressModal(selectedEntry);
+                // If you expect only one matching entry, you can use selectedEntry[0]
+                // console.log("Selected Entry:", selectedEntry[0]); // Debugging
+                // console.log("Clicked Timestamp:", clickedTimestamp);
+                // console.log(
+                //   "Progress Dates:",
+                //   progressData.map((entry) => entry.progress_date)
+                // );
+                // console.log(clickedIndex)
+                // console.log(progressData);
+                // console.log(chartData.labels);
+                // console.log("Elements Clicked:", elems);
+
+                // If you expect multiple matching entries, you may need to handle them accordingly
+                // For example, you can display them in a list or take some other action.
+
+                handleOpenViewProgressModal(selectedEntry[0]);
               }
             }}
           />
