@@ -124,7 +124,7 @@ export default function reducer(state = initialState, action) {
 		case UPDATE_PROGRESS:
 			return {
 				...state,
-				progressList: state.progressList.map((progress) =>
+				progressList: state.progressList.progress_entries.map((progress) =>
 					progress.id === action.payload.id ? action.payload : progress
 				),
 			};

@@ -52,7 +52,10 @@ def update_progress(id):
         return {"Error": "Progress entry not found"}, 404
 
     if form.validate_on_submit():
-        progress_entry.progress_date = form.data['progress_date']
+        # Convert the form data to a valid Python datetime object
+        progress_date = datetime.strptime(form.data['progress_date'], '%Y-%m-%d')
+
+        progress_entry.progress_date = progress_date  # Assign the valid datetime
         progress_entry.weight = form.data['weight']
         progress_entry.body_fat_percentage = form.data['body_fat_percentage']
         progress_entry.height = form.data['height']
@@ -61,6 +64,7 @@ def update_progress(id):
 
         db.session.commit()
         return progress_entry.to_dict(), 200
+
 
 @progress_routes.route('/<int:id>', methods=["DELETE"])
 @login_required

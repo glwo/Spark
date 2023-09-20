@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateProgress, fetchProgress } from '../../store/progress';
+import { alterProgress, fetchProgress } from '../../store/progress';
 import { useHistory } from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import moment from 'moment';
@@ -9,7 +9,8 @@ import './ProgressForm.css'
 const UpdateProgress = ({ onClose, progress }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [progress_date, setProgressDate] = useState(progress.progress_date);
+  const initialProgressDate = moment(progress.progress_date).format('YYYY-MM-DD');
+  const [progress_date, setProgressDate] = useState(initialProgressDate);
   const [weight, setWeight] = useState(progress.weight);
   const [body_fat_percentage, setBodyFat] = useState(progress.body_fat_percentage);
   const [height, setHeight] = useState(progress.height);
@@ -18,7 +19,7 @@ const UpdateProgress = ({ onClose, progress }) => {
   const [errors, setErrors] = useState([]);
   const currentUser = useSelector(state => state.session.user);
 
-
+  // console.log(progress)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ const UpdateProgress = ({ onClose, progress }) => {
 
     // console.log(progress)
 
-    const data = await dispatch(updateProgress(progressData));
+    const data = await dispatch(alterProgress(progressData));
     if (data.errors) {
       setErrors(data.errors);
     } else {
@@ -56,7 +57,7 @@ const UpdateProgress = ({ onClose, progress }) => {
 
   return (
     <Dialog open={true} onClose={onClose}>
-      <DialogTitle>Add Progress</DialogTitle>
+      <DialogTitle>Update Progress</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <ul>
@@ -116,7 +117,7 @@ const UpdateProgress = ({ onClose, progress }) => {
             margin="normal"
           />
           <DialogActions>
-            <Button className='create-button' type="submit">Create Progress</Button>
+            <Button className='create-button' type="submit">Update Progress</Button>
           </DialogActions>
         </form>
       </DialogContent>
