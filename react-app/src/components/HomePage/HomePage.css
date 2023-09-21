@@ -5,15 +5,26 @@
   flex-direction: column; /* Changed */
 }
 
-.homePageContent {
+/* .homePageContent {
   text-align: center;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* Updated */
+  justify-content: space-between;
   flex-grow: 1;
-  margin-bottom: 2rem; /* Added */
+  margin-bottom: 2rem;
+} */
+
+.homePageContent {
+  background-color: #222;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 0;
+  margin-bottom: 2rem;
+  align-items: flex-start;
 }
 
   .welcomeMessage {
@@ -117,4 +128,29 @@
 
   .loggedInContainer h2{
     color: #efaf00;
+  }
+
+  .homePageContent {
+    background-color: #222; /* Add background color */
+    color: #fff;
+    display: flex;
+    flex-direction: row; /* Change to row */
+    justify-content: space-between; /* Center and create space between content and sidebar */
+    flex-grow: 1;
+    margin-bottom: 2rem;
+  }
+
+  .leftSidebar {
+    background-color: #222;
+    min-width: 200px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .loggedInContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }

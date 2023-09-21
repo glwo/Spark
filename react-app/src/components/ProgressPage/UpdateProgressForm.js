@@ -19,8 +19,6 @@ const UpdateProgress = ({ onClose, progress }) => {
   const [errors, setErrors] = useState([]);
   const currentUser = useSelector(state => state.session.user);
 
-  // console.log(progress)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors([]);
@@ -35,8 +33,6 @@ const UpdateProgress = ({ onClose, progress }) => {
       age,
       metabolic_age,
     };
-
-    // console.log(progress)
 
     const data = await dispatch(alterProgress(progressData));
     if (data.errors) {

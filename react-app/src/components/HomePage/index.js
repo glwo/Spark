@@ -5,6 +5,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import Spark from "../Spark";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import Dashboard from "../Dashboard";
 import "./HomePage.css";
 
 const HomePage = () => {
@@ -33,24 +34,28 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="loggedInContainer">
+              <div className="leftSidebar">
                 <h1>Welcome to the Spark Community!</h1>
                 <h2>How can we help you reach your full potential?</h2>
-              <div className="loggedInButtons">
-                <Link to="/workouts" className="loggedInButton">
-                  Workouts
-                </Link>
-                <Link to="/progress" className="loggedInButton">
-                  Progress
-                </Link>
-                <Link to="/inspiration" className="loggedInButton">
-                  Inspiration
-                </Link>
-                <Link to="/community" className="loggedInButton">
-                  Community
-                </Link>
+                <div className="loggedInButtons">
+                  <Link to="/workouts" className="loggedInButton">
+                    Workouts
+                  </Link>
+                  <Link to="/progress" className="loggedInButton">
+                    Progress
+                  </Link>
+                  <Link to="/inspiration" className="loggedInButton">
+                    Inspiration
+                  </Link>
+                  <Link to="/community" className="loggedInButton">
+                    Community
+                  </Link>
+                </div>
               </div>
             </div>
           )}
+          <Dashboard />
+          </div>
           <footer className="footer">
             <h3>You can't start a fire without a spark - Bruce Springsteen</h3>
             <div className="rightside-footer">
@@ -87,7 +92,6 @@ const HomePage = () => {
             </div>
           </footer>
         </div>
-      </div>
     );
   };
 
