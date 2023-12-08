@@ -20,11 +20,11 @@
   background-color: #222;
   color: #fff;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   flex-grow: 0;
   margin-bottom: 2rem;
-  align-items: flex-start;
+  align-items: center;
 }
 
   .welcomeMessage {
@@ -134,7 +134,7 @@
     background-color: #222; /* Add background color */
     color: #fff;
     display: flex;
-    flex-direction: row; /* Change to row */
+    flex-direction: column; /* Change to row */
     justify-content: space-between; /* Center and create space between content and sidebar */
     flex-grow: 1;
     margin-bottom: 2rem;

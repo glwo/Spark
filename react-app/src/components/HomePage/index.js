@@ -15,7 +15,7 @@ const HomePage = () => {
       <div className="homePageContainer">
         <div className="homePageContent">
           {!currentUser ? (
-            <div>
+            <div className="buttonDiv">
               <Spark />
               <div className="WelcomeButtons">
                 <h1 className="welcomeMessage">Welcome to Spark</h1>
@@ -54,7 +54,6 @@ const HomePage = () => {
               </div>
             </div>
           )}
-          <Dashboard />
           </div>
           <footer className="footer">
             <h3>You can't start a fire without a spark - Bruce Springsteen</h3>

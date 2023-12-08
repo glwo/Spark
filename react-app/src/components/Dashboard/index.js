@@ -11,31 +11,6 @@ function Dashboard(props) {
   const [inactiveSubs, setInactiveSubs] = useState();
 
   useEffect(() => {
-    // let gold = 0;
-    // let premium = 0;
-    // let standard = 0;
-    // let inactive = 0;
-    // users.forEach((user) => {
-    //   user.subscriptions.forEach((subscription) => {
-    //     if (subscription.tier === 'gold') {
-    //       gold++;
-    //     }
-    //     if (subscription.tier === 'premium') {
-    //       premium++;
-    //     }
-    //     if (subscription.tier === 'standard') {
-    //       standard++;
-    //     }
-    //     if (subscription.tier === 'inactive') {
-    //       inactive++;
-    //     }
-    //   });
-    // });
-    // setGoldSubs(gold);
-    // setPremiumSubs(premium);
-    // setStandardSubs(standard);
-    // setInactiveSubs(inactive);
-    // setTotalSubs(gold + premium + standard);
   }, []);
 
   const renderLineChart = () => {
